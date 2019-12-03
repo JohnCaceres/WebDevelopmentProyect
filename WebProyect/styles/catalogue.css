@@ -410,11 +410,15 @@
 
 			#alreadyReviewed{
 				display: none;
-				color: white;
-				margin: auto;
-				text-align: center;
+				position: fixed;
+				top: 5%;
+				left: 10%;
+				height: 50%;
+				width: 60%;
+				background-color: #61616b;
+				z-index: 4;
 			}
-			
+
 		  @keyframes spin {
 			from {
 			  transform: rotate(0deg);

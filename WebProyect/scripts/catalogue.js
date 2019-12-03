@@ -290,15 +290,6 @@ document.getElementById("userImage").onclick= function(){
 		});
 	}
 
-
-function showCommentDisp(id){
-	document.getElementById("blackBG2").style.display="block";
-	document.getElementById("commentDisplay").style.display="block";
-	const revewbuttons = document.getElementById("reviewButLoc");
-	revewbuttons.innerHTML = ("<button id='reviewButton' onclick='writeReview()'>Write a Review</button>");
-	document.getElementById("id").value=id;
-}
-
 function exitCommentDisp(){
 		document.getElementById("blackBG2").style.display="none";
 	document.getElementById("commentDisplay").style.display="none";

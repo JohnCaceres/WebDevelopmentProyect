@@ -4,6 +4,7 @@ const containerMessage = document.getElementById("root");
 var gameid = "12345"; //Provisional
 var titleInput = title.value;
 var reviewArea = review.value;
+var gameJson = null;
 
 reviewForm.agregar.onclick = function(){
   event.preventDefault();
@@ -16,22 +17,63 @@ reviewForm.agregar.onclick = function(){
       alert("Please give a rating before submitting.")
   } else{
     addReview();
+    document.getElementById("blackBG2").style.display="none";
+    document.getElementById("reviewEditor").style.display="none";
   }
+}
+
+function showCommentDisp(id){
+	document.getElementById("blackBG2").style.display="block";
+	document.getElementById("commentDisplay").style.display="block";
+	const revewbuttons = document.getElementById("reviewButLoc");
+	revewbuttons.innerHTML = ("<button id='reviewButton' onclick='writeReview()'>Write a Review</button>");
+	document.getElementById("id").value=id;
+  fetchReview();
+}
+
+function reviewCircle(list){
+  for(var i = 0; Object.keys(list).length; i++){
+    console.log(list[i].username);
+    generateReviewList(list[i].username,list[i].descripcion,list[i].calificacion,list[i].fecha);
+  }
+}
+
+function generateReviewList(uname,review,score,date){
+  display = document.getElementById("reviewDisplay");
+
+	const username = document.createElement('div');
+	username.setAttribute('id','unameShow');
+  username.textContent = uname;
+	const reviewSC = document.createElement('div');
+	reviewSC.setAttribute('class','reviewShow');
+  reviewSC.textContent = review;
+	const scoreSC = document.createElement('div');
+	scoreSC.setAttribute('class','scoreShow');
+  scoreSC.textContent = score;
+  const dateSC = document.createElement('div');
+	dateSC.setAttribute('class','dateShow');
+  dateSC.textContent = date;
+
+	display.appendChild(username);
+	display.appendChild(reviewSC);
+	display.appendChild(scoreSC);
+	display.appendChild(dateSC);
 }
 
 document.getElementById("update").onclick = function(){
   event.preventDefault();
   updateReview();
+  document.getElementById("alreadyReviewed").style.display = "none";
 }
 
 document.getElementById("delete").onclick = function(){
   event.preventDefault();
   deleteReview();
+  document.getElementById("alreadyReviewed").style.display = "none";
 }
 
 document.getElementById("cancel").onclick = function(){
-  document.getElementById("blackBG2").style.display="none";
-  document.getElementById("reviewEditor").style.display="none";
+  document.getElementById("alreadyReviewed").style.display = "none";
 }
 
 function addReview(){
@@ -40,7 +82,7 @@ function addReview(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            handleResponse(this.responseText);
+            handleResponse(this.responseText,"4");
         }
     }
     xmlhttp.open("POST", "../scripts/userInformation.php?action=game_review&option=0", true);
@@ -54,7 +96,7 @@ function deleteReview(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            handleResponse(this.responseText);
+            handleResponse(this.responseText,"3");
         }
     }
     xmlhttp.open("POST", "../scripts/userInformation.php?action=game_review", true);
@@ -68,7 +110,7 @@ function updateReview(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            handleResponse(this.responseText);
+            handleResponse(this.responseText,"2");
         }
     }
     xmlhttp.open("POST", "../scripts/userInformation.php?action=game_review", true);
@@ -82,31 +124,30 @@ function fetchReview(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            handleResponse(this.responseText);
+            handleResponse(this.responseText,"1");
         }
     }
     xmlhttp.open("GET", "../scripts/userInformation.php?action=game_review&" + stringBuilder, true);
-    xmlhttp.send();
+    xmlhttp.send(stringBuilder);
 }
 
 //Funcion que manejara las acciones correspondientes a la respuesta del servidor
-function handleResponse(response){
+function handleResponse(response,check){
     let parsedResponse = null;
     try{
         parsedResponse = JSON.parse(response);
         if(parsedResponse.ok){
             console.log(parsedResponse.mensaje);
               if (parsedResponse.mensaje == "Already reviewed"){
-              document.getElementById("alreadyReviewed").style.display = "block";
+                document.getElementById("alreadyReviewed").style.display = "block";
+            } else if(check == "1"){
+                reviewCircle(parsedResponse.mensaje);
             } else{
-              alert(parsedResponse.mensaje);
-              document.getElementById("blackBG2").style.display="none";
-            	document.getElementById("reviewEditor").style.display="none";
               generatePopUpMessage(parsedResponse.mensaje);
             }
 
         }else{
-            generatePopUpMessage(parsedResponse.mensaje);
+            console.log(parsedResponse.mensaje);
         }
     } catch{
         console.log("No se pudo convertir a objeto");
