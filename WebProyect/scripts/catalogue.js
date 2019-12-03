@@ -31,7 +31,7 @@ function fetchUserGames(){
 			if(json.ok){
 				json.mensaje.forEach(games => {
 					console.log(games.gameid);
-					fetchGameName(games.gameid);
+					fetchFavGame(games.gameid);
 				});
 			}else{
 				console.log(json.mensaje);
@@ -56,15 +56,7 @@ function addFavorite(id){
     xmlhttp.send(stringBuilder);
 }
 
-function generateFavGame(name){
-	const favGame = document.createElement('div');
-	favGame.setAttribute('class','favGames');
-	favGame.innerHTML = (name);
-
-	document.getElementById("favGameList").appendChild(favGame);
-}
-
-function fetchGameName(gameID){
+function fetchFavGame(gameID){
 	fetch(("https://rawg-video-games-database.p.rapidapi.com/games/" + gameID), {
 	"method": "GET",
 	"headers": {
@@ -76,7 +68,7 @@ function fetchGameName(gameID){
 	.then(function (response) {
 			var jsonGame = response;
 			console.log(jsonGame.name);
-			generateFavGame(jsonGame.name);
+			displayFavGames(jsonGame.id, jsonGame.name, jsonGame.background_image);
 	})
 	.catch(function (err) {
 			console.log("No se puedo obtener el recurso", err);
@@ -122,6 +114,37 @@ function fetchGameInfo(gameID){
 	.catch(function (err) {
 			console.log("No se puedo obtener el recurso", err);
 	});
+}
+
+function displayFavGames(id,name,image){
+	const gameInfo = document.createElement('div');
+	gameInfo.setAttribute('class','gameInfo');
+	const gameImage = document.createElement('div');
+	gameImage.setAttribute('class','gameImage');
+	const cover = document.createElement('img');
+	cover.src = image;
+	const gameText = document.createElement('div');
+	gameText.setAttribute('class','gameText');
+	const gameTitle = document.createElement('div');
+	gameTitle.setAttribute('class','gameTitle');
+	gameTitle.textContent = name;
+	const gameData = document.createElement('div');
+	gameData.setAttribute('class','gameData');
+
+	const commBut= document.createElement('div');
+	commBut.setAttribute('class','commentButt');
+	commBut.innerHTML=("<button class='commentB' onClick='addFavorite(" + id + ")'>Favorite</button>");
+
+
+	//const gameFav
+	app.appendChild(gameInfo);
+	gameInfo.appendChild(gameImage);
+	gameImage.appendChild(gameTitle);
+	gameImage.appendChild(cover);
+	gameInfo.appendChild(gameText);
+	//gameText.appendChild(gameTitle);
+	gameText.appendChild(gameData);
+	gameText.appendChild(commBut);
 }
 
 //Genera un contenedor con toda la información del juego
@@ -210,16 +233,13 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 document.getElementById("userImage").onclick= function(){
-		document.getElementById("favGameList").innerHTML = "";
-
-		document.getElementById("blackBG").style.display = 'block';
+		document.getElementById("gameContainer").innerHTML = "";
+		document.getElementById("gameContainer").style.gridTemplateColumns = "50%";
+		// document.getElementById("blackBG").style.display = 'block';
 		document.getElementById("userPanel").style.display = 'block';
 
-	document.getElementById("gameContainer").onclick= function(){
-		document.getElementById("blackBG").style.display = 'none';
-		document.getElementById("userPanel").style.display = 'none';
-		document.getElementById("userEdit").style.display = 'none';
-	}
+	// document.getElementById("gameContainer").onclick= function(){
+	// }
 	document.getElementById("searchBar").onclick= function(){
 		document.getElementById("userPanel").style.display = 'none';
 		document.getElementById("blackBG").style.display = 'none';
@@ -293,6 +313,14 @@ function writeReview(){
 function exitReviewDisp(){
 	document.getElementById("blackBG2").style.display="none";
 	document.getElementById("reviewEditor").style.display="none";
+}
+
+function exitUserPane(){
+	document.getElementById("gameContainer").style.gridTemplateColumns = "50% 50%";
+	reLoadGames("");
+	document.getElementById("blackBG").style.display = 'none';
+	document.getElementById("userPanel").style.display = 'none';
+	document.getElementById("userEdit").style.display = 'none';
 }
 
 function validateUser(){
