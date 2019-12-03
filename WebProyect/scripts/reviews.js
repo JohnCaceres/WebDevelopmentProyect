@@ -7,7 +7,31 @@ var reviewArea = review.value;
 
 reviewForm.agregar.onclick = function(){
   event.preventDefault();
-  addReview();
+  var reviewin = document.getElementById("review").value;
+  var ratingin = document.getElementById("rating").value;
+  if (reviewin == "" || reviewin.length == 0 || reviewin == null)
+  {
+      alert("Please write a review before submitting.")
+  } else if (ratingin == "" || ratingin.length == 0 || ratingin == null){
+      alert("Please give a rating before submitting.")
+  } else{
+    addReview();
+  }
+}
+
+document.getElementById("update").onclick = function(){
+  event.preventDefault();
+  updateReview();
+}
+
+document.getElementById("delete").onclick = function(){
+  event.preventDefault();
+  deleteReview();
+}
+
+document.getElementById("cancel").onclick = function(){
+  document.getElementById("blackBG2").style.display="none";
+  document.getElementById("reviewEditor").style.display="none";
 }
 
 function addReview(){
@@ -22,8 +46,6 @@ function addReview(){
     xmlhttp.open("POST", "../scripts/userInformation.php?action=game_review&option=0", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(stringBuilder);
-    document.getElementById("blackBG2").style.display="none";
-  	document.getElementById("reviewEditor").style.display="none";
 }
 
 function deleteReview(){
@@ -74,7 +96,15 @@ function handleResponse(response){
         parsedResponse = JSON.parse(response);
         if(parsedResponse.ok){
             console.log(parsedResponse.mensaje);
-            generatePopUpMessage(parsedResponse.mensaje);
+              if (parsedResponse.mensaje == "Already reviewed"){
+              document.getElementById("alreadyReviewed").style.display = "block";
+            } else{
+              alert(parsedResponse.mensaje);
+              document.getElementById("blackBG2").style.display="none";
+            	document.getElementById("reviewEditor").style.display="none";
+              generatePopUpMessage(parsedResponse.mensaje);
+            }
+
         }else{
             generatePopUpMessage(parsedResponse.mensaje);
         }
