@@ -15,24 +15,31 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
+
   background: #61616b;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
+
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
+
   background: #9e9d9d;
+
+
+
 }
 
 		#blackBG{
 			pointer-events: none;
 			height: 100%;
 			width: 100%;
+
 			position: fixed;
 			background-color: black;
 			opacity: .5;
@@ -43,12 +50,14 @@
 			pointer-events: none;
 			height: 100%;
 			width: 100%;
+
 			position: fixed;
 			background-color: black;
 			opacity: .5;
 			z-index: 2;
 			display: none;
 		}
+
 
 		#navTitle{
 			font-family: var(--font);
@@ -103,7 +112,9 @@
 			width: 90px;
 			height:40px;
 			margin-left: 16%;
+
 			margin-top: 10px;
+
 
 		}
 
@@ -213,7 +224,6 @@
 			width: 90%;
 			height: 100%;
 
-
 		}
 		.gameText:hover {
 			transition: opacity 2s;
@@ -221,6 +231,7 @@
 			opacity:1;
 
 		}
+
 		.gameText:not( :hover ){
 			opacity:0;
 		}
@@ -259,14 +270,17 @@
 			right: 3%;
 			bottom: 3%;
 
+
 		}
 		.commentB{
 			color: var(--textColor);
 			background-color:  #3c3c42;
 			border-style: none;
 			border-radius: 15px;
+
 			margin-left: 5px;
 			margin-right: 5px;
+
 		}
 
 		#commentDisplay{
@@ -277,7 +291,9 @@
 			left: 10%;
 			height: 92%;
 			width: 78%;
+
 			background-color: #61616b;
+
 			z-index: 4;
 		}
 		#gameInfoComm img{
@@ -344,6 +360,7 @@
 		  	background-color: transparent;
 
 		  }
+
 
 			#reviewExitButt{
 		  	font-weight: bold;
@@ -418,6 +435,7 @@
 				background-color: #61616b;
 				z-index: 4;
 			}
+
 
 		  @keyframes spin {
 			from {

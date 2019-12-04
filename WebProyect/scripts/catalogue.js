@@ -3,6 +3,8 @@ const loadIcon = document.getElementById("loadingIcon");
 validateUser();//Validamos antes si es un usuario valido
 fetchUserData();
 
+
+
 //TODO: Create Objects "games"
 
 function fetchUserData(){
@@ -165,9 +167,11 @@ function generateGame(id,image,name,date,developer,genre,description){
 	gameData.innerHTML = ("Released: " + date + "<br> Developer: " + developer
 	+ "<br> Genre: " + genre);
 
+
 	const commBut= document.createElement('div');
 	commBut.setAttribute('class','commentButt');
 	commBut.innerHTML=("<button class='commentB' onClick='showCommentDisp(" + id + ")'>Reviews</button><button class='commentB' onClick='addFavorite(" + id + ")'>Favorite</button>");
+
 
 	const gameDescription = document.createElement('div');
 	gameDescription.setAttribute('class','gameDescription');
@@ -190,6 +194,7 @@ window.onload= function(){
 	loadIcon.removeAttribute('hidden');//Hacemos visible el icono de carga
 	fetchGameList();
 	loadIcon.setAttribute("hidden","");//Lo volvemos invisible el icono de carga
+
 
 	//inactivityTime();
 
@@ -238,8 +243,10 @@ document.getElementById("userImage").onclick= function(){
 		// document.getElementById("blackBG").style.display = 'block';
 		document.getElementById("userPanel").style.display = 'block';
 
+
 	// document.getElementById("gameContainer").onclick= function(){
 	// }
+
 	document.getElementById("searchBar").onclick= function(){
 		document.getElementById("userPanel").style.display = 'none';
 		document.getElementById("blackBG").style.display = 'none';
@@ -265,6 +272,7 @@ document.getElementById("userImage").onclick= function(){
 		document.getElementById("blackBG").style.display = 'block';
 
 	}
+
 	fetchUserGames();
 
 }
@@ -312,8 +320,23 @@ function exitUserPane(){
 	document.getElementById("blackBG").style.display = 'none';
 	document.getElementById("userPanel").style.display = 'none';
 	document.getElementById("userEdit").style.display = 'none';
-}
 
+
+
+}
+	function reLoadGames(searchTerm){
+		//Recargar gameContainer con los juegos que encuentre
+	}
+
+
+function showCommentDisp(){
+	document.getElementById("blackBG2").style.display="block";
+	document.getElementById("commentDisplay").style.display="block";
+}
+function exitCommentDisp(){
+		document.getElementById("blackBG2").style.display="none";
+	document.getElementById("commentDisplay").style.display="none";
+}
 function validateUser(){
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
